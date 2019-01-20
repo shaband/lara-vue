@@ -1,4 +1,6 @@
-import { getLocalUser } from "../helpers/helper";
+import {
+    getLocalUser
+} from "../helpers/helper";
 
 const user = getLocalUser;
 
@@ -30,18 +32,21 @@ export const storeData = {
             state.isLoggedIn = true;
             state.currentUser = user;
             state.auth_error = null;
-            localStorage.setItem(JSON.stringify(user));
+            localStorage.setItem('user', JSON.stringify(user));
         },
         login_error: (state, payload) => {
+            console.log('started')
             state.loading = false;
             state.isLoggedIn = false;
             state.auth_error = payload.err;
+            state.auth_error = payload.err;
+            localStorage.removeItem("user");
+
         },
         logout: state => {
             state.loading = false;
             state.isLoggedIn = false;
             state.currentUser = null;
-
             localStorage.removeItem("user");
         }
     },

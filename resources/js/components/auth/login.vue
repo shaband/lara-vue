@@ -33,7 +33,7 @@
         data() {
             return {
                 form: {
-                    name: '',
+                    email: '',
                     password: ''
                 }
             }
@@ -44,19 +44,19 @@
                 login(this.form)
                     .then(res => {
                         this.$store.commit('login_success', res)
-
                         this.$router.push({
                             path: '/'
                         })
                     })
-                    .catch(err => this.$store.commit('login_error', {
-                        err
-                    }))
+                    .catch(err => {
+                        console.log(err);
+                        this.$store.commit('login_error', {
+                            err
+                        })
+                    });
 
-
-            },
+            }
         }
-
     }
 
 </script>

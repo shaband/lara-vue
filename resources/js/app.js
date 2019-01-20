@@ -12,8 +12,23 @@ import {
 import {
     router
 } from './router/router'
+
 Vue.use(vueRouter)
 Vue.use(Vuex)
+
+
+router.beforeEach((to, from, next) => {
+
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const is_logged_in = store.state.isLoggedIn;
+    //console.log(to.path == '/login' && !is_logged_in);
+    console.log(requiresAuth == is_logged_in)
+    if (is_logged_in && to.path == '/login') {
+        next('/')
+    } else if (requiresAuth == is_logged_in) {
+        next()
+    }
+});
 const store = new Vuex.Store(storeData)
 const app = new Vue({
     router,

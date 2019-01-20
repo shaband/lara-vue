@@ -4,7 +4,10 @@ import login from '../components/auth/login.vue'
 const routes = [{
     name: 'home',
     path: '/',
-    component: ExampleComponent
+    component: ExampleComponent,
+    meta: {
+        requiresAuth: true
+    }
 }, {
     name: 'login',
     path: '/login',

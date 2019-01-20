@@ -2,7 +2,7 @@ import Axios from "axios";
 
 export function login(credentials) {
     return new Promise((res, rej) => {
-        Axios('/api/auth/login', credentials)
+        Axios.post('/api/auth/login', credentials)
             .then(Response => res(Response.data))
             .catch(err => rej('wrong data'))
 

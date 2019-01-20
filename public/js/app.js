@@ -1860,7 +1860,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        name: '',
+        email: '',
         password: ''
       }
     };
@@ -1877,7 +1877,9 @@ __webpack_require__.r(__webpack_exports__);
           path: '/'
         });
       }).catch(function (err) {
-        return _this.$store.commit('login_error', {
+        console.log(err);
+
+        _this.$store.commit('login_error', {
           err: err
         });
       });
@@ -52582,6 +52584,20 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+_router_router__WEBPACK_IMPORTED_MODULE_7__["router"].beforeEach(function (to, from, next) {
+  var requiresAuth = to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  });
+  var is_logged_in = store.state.isLoggedIn; //console.log(to.path == '/login' && !is_logged_in);
+
+  console.log(requiresAuth == is_logged_in);
+
+  if (is_logged_in && to.path == '/login') {
+    next('/');
+  } else if (requiresAuth == is_logged_in) {
+    next();
+  }
+});
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store(_store_store__WEBPACK_IMPORTED_MODULE_6__["storeData"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _router_router__WEBPACK_IMPORTED_MODULE_7__["router"],
@@ -52874,7 +52890,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function login(credentials) {
   return new Promise(function (res, rej) {
-    axios__WEBPACK_IMPORTED_MODULE_0___default()('/api/auth/login', credentials).then(function (Response) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/auth/login', credentials).then(function (Response) {
       return res(Response.data);
     }).catch(function (err) {
       return rej('wrong data');
@@ -52912,7 +52928,10 @@ __webpack_require__.r(__webpack_exports__);
 var routes = [{
   name: 'home',
   path: '/',
-  component: _components_ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  component: _components_ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   name: 'login',
   path: '/login',
@@ -52975,12 +52994,15 @@ var storeData = {
       state.isLoggedIn = true;
       state.currentUser = user;
       state.auth_error = null;
-      localStorage.setItem(JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
     },
     login_error: function login_error(state, payload) {
+      console.log('started');
       state.loading = false;
       state.isLoggedIn = false;
       state.auth_error = payload.err;
+      state.auth_error = payload.err;
+      localStorage.removeItem("user");
     },
     logout: function logout(state) {
       state.loading = false;
