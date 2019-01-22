@@ -1,4 +1,5 @@
 require('./bootstrap');
+const Axios = require('axios')
 import Vue from 'vue';
 import Vuex from 'vuex'
 import boostrap from 'bootstrap';
@@ -21,15 +22,26 @@ router.beforeEach((to, from, next) => {
 
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     const is_logged_in = store.state.isLoggedIn;
-    //console.log(to.path == '/login' && !is_logged_in);
-    console.log(requiresAuth == is_logged_in)
-    if (is_logged_in && to.path == '/login') {
+    if (is_logged_in == true && to.path == '/login') {
         next('/')
-    } else if (requiresAuth == is_logged_in) {
+    } else if (requiresAuth && is_logged_in == false) {
+        next("/login")
+    } else {
         next()
     }
 });
-const store = new Vuex.Store(storeData)
+
+
+
+const store = new Vuex.Store(storeData);
+
+Axios.interceptors.response.use(null, err => {
+    if (err.response.status == 401) {
+        store.commit('logout');
+        router.push('/login');
+
+    }
+})
 const app = new Vue({
     router,
     store,

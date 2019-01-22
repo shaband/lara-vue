@@ -5,6 +5,10 @@
                 <div class="card-header">login</div>
                 <div class="card-body">
                     <form @submit.prevent="authenticate">
+                 
+                    <div  v-if="auth_error" class="alert alert-danger">
+  {{auth_error}}
+</div>
                         <div class="form-group row">
                             <label for="email">Email:</label>
                             <input type="email" v-model="form.email" class="form-control" placeholder="Email Address">
@@ -56,6 +60,11 @@
                     });
 
             }
+        },
+        computed:{
+           auth_error(){
+               return this.$store.getters.auth_error
+           } 
         }
     }
 

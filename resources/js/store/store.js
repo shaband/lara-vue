@@ -2,7 +2,7 @@ import {
     getLocalUser
 } from "../helpers/helper";
 
-const user = getLocalUser;
+const user = getLocalUser();
 
 export const storeData = {
     state: {
@@ -38,7 +38,6 @@ export const storeData = {
             console.log('started')
             state.loading = false;
             state.isLoggedIn = false;
-            state.auth_error = payload.err;
             state.auth_error = payload.err;
             localStorage.removeItem("user");
 
