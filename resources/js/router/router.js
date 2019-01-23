@@ -13,6 +13,28 @@ const routes = [{
         name: 'login',
         path: '/login',
         component: login
+    },
+    {
+        name: 'costumer',
+        path: '/costumer',
+        component: customerIndex,
+        meta: {
+            requiresAuth: true
+        },
+        children: [{
+                path: '/',
+                component: customerTable
+            },
+            {
+                path: '/create',
+                component: customerCreate
+            },
+            {
+                path: ':id/show',
+                component: customershow
+            },
+
+        ]
     }
 ];
 export const router = new Router({
