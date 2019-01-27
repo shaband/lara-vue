@@ -1,6 +1,10 @@
 import Router from 'vue-router';
 import ExampleComponent from '../components/ExampleComponent.vue'
 import login from '../components/auth/login.vue'
+import customerIndex from '../components/costumers/index.vue'
+import customerTable from '../components/costumers/table.vue'
+import customerCreate from '../components/costumers/create.vue'
+import customershow from '../components/costumers/show.vue'
 const routes = [{
         name: 'home',
         path: '/',
@@ -15,8 +19,8 @@ const routes = [{
         component: login
     },
     {
-        name: 'costumer',
-        path: '/costumer',
+        name: 'customer',
+        path: '/customer',
         component: customerIndex,
         meta: {
             requiresAuth: true
@@ -30,7 +34,7 @@ const routes = [{
                 component: customerCreate
             },
             {
-                path: ':id/show',
+                path: ':id',
                 component: customershow
             },
 

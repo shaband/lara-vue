@@ -1,8 +1,6 @@
-import Axios from "axios";
-
 export function login(credentials) {
     return new Promise((res, rej) => {
-        Axios.post('/api/auth/login', credentials)
+        axios.post('/api/auth/login', credentials)
             .then(Response => res(Response.data))
             .catch(err => rej('wrong data'))
 
@@ -17,5 +15,15 @@ export function getLocalUser() {
         return null
     } else {
         return JSON.parse(user)
+    }
+}
+
+export function Authorization() {
+
+    let user = getLocalUser();
+    if (!user) {
+        return null
+    } else {
+        return user.token_type + " " + user.token
     }
 }

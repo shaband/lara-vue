@@ -1,5 +1,5 @@
 import {
-    getLocalUser
+    getLocalUser,
 } from "../helpers/helper";
 
 const user = getLocalUser();
@@ -9,13 +9,15 @@ export const storeData = {
         currentUser: user,
         isLoggedIn: !!user,
         loading: false,
-        auth_error: null
+        auth_error: null,
+        customer: []
     },
     getters: {
         isLoading: state => state.loading,
         isLoggedIn: state => state.isLoggedIn,
         currentUser: state => state.currentUser,
-        auth_error: state => state.auth_error
+        auth_error: state => state.auth_error,
+        customer: state => state.customer
     },
     mutations: {
         login: state => {
@@ -47,9 +49,24 @@ export const storeData = {
             state.isLoggedIn = false;
             state.currentUser = null;
             localStorage.removeItem("user");
+        },
+        updateCustomers: (state, payload) => {
+
+            return state.customer = payload.customers
         }
+
     },
     actions: {
-        login: context => context.commit("login")
+        login: context => context.commit("login"),
+        getCustomers: context => {
+            let getCustomers = axios.get('/api/customers');
+            getCustomers.then(response => {
+                context.commit('updateCustomers', response.data)
+            })
+        },
+        addCustomer: (context, payload) => {
+            let store = axios.post('/api/store', payload);
+            store.then(response => {})
+        }
     }
 };

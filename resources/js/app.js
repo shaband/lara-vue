@@ -1,10 +1,7 @@
 require('./bootstrap');
-const Axios = require('axios')
 import Vue from 'vue';
 import Vuex from 'vuex'
-import boostrap from 'bootstrap';
 import vueRouter from 'vue-router'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.vue'
 
 import {
@@ -13,6 +10,9 @@ import {
 import {
     router
 } from './router/router'
+import {
+    Authorization
+} from './helpers/helper';
 
 Vue.use(vueRouter)
 Vue.use(Vuex)
@@ -34,13 +34,14 @@ router.beforeEach((to, from, next) => {
 
 
 const store = new Vuex.Store(storeData);
+window.axios.defaults.headers.common['Authorization'] = Authorization()
 
-Axios.interceptors.response.use(null, err => {
+window.axios.interceptors.response.use(null, err => {
     if (err.response.status == 401) {
         store.commit('logout');
         router.push('/login');
-
     }
+    return Promise.reject(err);
 })
 const app = new Vue({
     router,

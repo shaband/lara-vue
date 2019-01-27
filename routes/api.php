@@ -23,5 +23,7 @@ Route::group([
     Route::post('logout', 'api\AuthController@logout');
     Route::post('refresh', 'api\AuthController@refresh');
     Route::post('me', 'api\AuthController@me');
-
 });
+
+
+Route::resource('customers', 'api\CustomerController')->middleware('jwt.auth');
