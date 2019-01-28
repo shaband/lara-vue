@@ -19,22 +19,26 @@ const routes = [{
         component: login
     },
     {
-        name: 'customer',
         path: '/customer',
         component: customerIndex,
+
         meta: {
             requiresAuth: true
         },
         children: [{
                 path: '/',
-                component: customerTable
+                component: customerTable,
+                name: 'customer.index',
+
             },
             {
-                path: '/create',
+                path: 'create',
+                name: 'customer.create',
                 component: customerCreate
             },
             {
                 path: ':id',
+                name: 'customer.show',
                 component: customershow
             },
 

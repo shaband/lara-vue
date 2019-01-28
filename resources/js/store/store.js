@@ -1,5 +1,5 @@
 import {
-    getLocalUser,
+    getLocalUser
 } from "../helpers/helper";
 
 const user = getLocalUser();
@@ -34,15 +34,14 @@ export const storeData = {
             state.isLoggedIn = true;
             state.currentUser = user;
             state.auth_error = null;
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user));
         },
         login_error: (state, payload) => {
-            console.log('started')
+            console.log("started");
             state.loading = false;
             state.isLoggedIn = false;
             state.auth_error = payload.err;
             localStorage.removeItem("user");
-
         },
         logout: state => {
             state.loading = false;
@@ -51,22 +50,25 @@ export const storeData = {
             localStorage.removeItem("user");
         },
         updateCustomers: (state, payload) => {
-
-            return state.customer = payload.customers
+            return (state.customer = payload.customers);
         }
-
     },
     actions: {
         login: context => context.commit("login"),
         getCustomers: context => {
-            let getCustomers = axios.get('/api/customers');
+            let getCustomers = axios.get("/api/customers");
             getCustomers.then(response => {
-                context.commit('updateCustomers', response.data)
-            })
+                context.commit("updateCustomers", response.data);
+            });
         },
         addCustomer: (context, payload) => {
-            let store = axios.post('/api/store', payload);
-            store.then(response => {})
+            let store = axios.post("/api/customers", payload);
+            return store.then(response => response).catch(err => err)
+        },
+        getCustomer: (context, payload) => {
+            let userRequest = axios.get(`/api/customers/${payload}`)
+            return userRequest.then(response => response).catch(err => err)
+
         }
     }
 };
